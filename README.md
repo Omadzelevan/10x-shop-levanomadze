@@ -6,9 +6,9 @@
 
 - https://10-x-shop.netlify.app/ (Netlify)
 
-Direct links such as `/products/5` and `/cart` need the latest Netlify deploy with
-`public/_redirects` (SPA fallback). Redeploy after pulling this change; see
-[COMPATIBILITY.md](COMPATIBILITY.md) for the verified status.
+Direct links such as `/products/5` and `/cart` work through `public/_redirects` (Netlify SPA
+fallback); both browsers were verified against the live URL. See
+[COMPATIBILITY.md](COMPATIBILITY.md).
 
 ## Features (CORE)
 

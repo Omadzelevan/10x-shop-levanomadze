@@ -49,22 +49,25 @@ The `lint` script still exits 0 on the current source.
 | Chrome functional checks (current build) | 25 / 25 passed |
 | Chrome responsive / screenshot checks | 15 / 15 passed |
 | Firefox functional checks (current build) | 23 / 23 passed |
-| Lighthouse mobile — Performance | 86 |
+| Lighthouse mobile — Performance | 89 |
 | Lighthouse mobile — Accessibility | 100 |
 | Lighthouse mobile — Best Practices | 100 |
 | Lighthouse mobile — SEO | 100 |
 | Lighthouse mobile — CLS | 0.171 (FULL target < 0.1 not met) |
-| Live URL | root ✓; every direct route returns 404 until the SPA fix is redeployed |
-| Commit count | 29 (24 on 5 Nov 2026, 5 on 12 Nov 2026) |
+| Live URL | root ✓; direct routes ✓ (HTTP 200, Chrome + Firefox) |
+| Commit count | 31 (24 on 5 Nov 2026, 7 on 12 Nov 2026) |
 | Issues / pull requests | 0 / 0 in `Omadzelevan/10x-shop-levanomadze` |
 | Repository name | `10x-shop-levanomadze` (matches `10x-shop-{name}`) |
 
 The bundle numbers come from `npm run build` on 12 Nov 2026. The Lighthouse baseline is in
 `docs/lighthouse/mobile-baseline.report.html` / `.report.json`: mobile preset, Chrome
-157.0.8103.39, live URL, captured 12 Nov 2026. DummyJSON latency affects repeat runs.
+157.0.8103.39, live URL, captured after the final deploy on 12 Nov 2026. DummyJSON latency
+affects repeat runs; observed Performance ranged from 64 to 97 across five runs, and the saved
+report is the final complete run (89). The live deploy now returns HTTP 200 for every direct
+route and serves a valid `robots.txt`.
 
-**Git history limitation:** of the 29 commits, 24 are dated 5 Nov 2026 inside a ~1h19m window
-and the remaining 5 are dated 12 Nov 2026. They do not demonstrate the planned three-week
+**Git history limitation:** of the 31 commits, 24 are dated 5 Nov 2026 inside a ~1h19m window
+and the remaining 7 are dated 12 Nov 2026. They do not demonstrate the planned three-week
 cadence. History cannot be backdated honestly; future work should use smaller, dated commits.
 
 ## 3. What was verified and what was not
@@ -82,7 +85,8 @@ cadence. History cannot be backdated honestly; future work should use smaller, d
   passed, including cart reload persistence and the in-memory login reset.
 - Responsive checks in Chrome: 375px, 768px and 1280px; 1-, 2- and 4-column grids, no horizontal
   overflow, stacked checkout, 44px tap targets.
-- Lighthouse mobile run against `https://10-x-shop.netlify.app/`: 86 / 100 / 100 / 100.
+- Lighthouse mobile run against `https://10-x-shop.netlify.app/`: 89 / 100 / 100 / 100,
+  after adding a valid `robots.txt`.
 - Targeted failure checks: blocking `dummyjson.com` shows a readable error (not `Failed to
   fetch`), the discounted price matches the formula, and the checkout form has no horizontal
   overflow at 375px with 44px inputs.
@@ -91,9 +95,6 @@ cadence. History cannot be backdated honestly; future work should use smaller, d
 
 ### Remaining external actions
 
-- **Redeploy Netlify.** The deployed build predates `public/_redirects`, so direct URLs still
-  return 404 and the old checkout email text is still live. The fix is present in the working
-  tree and appears in `dist/_redirects`; a new deploy is required.
 - **Set the GitHub homepage** to `https://10-x-shop.netlify.app/` and add a short description;
   the homepage field was empty when checked on 12 Nov 2026. The repository is already renamed
   to `10x-shop-levanomadze`.
@@ -142,15 +143,16 @@ understand and defend every file.
 
 1. **Done:** public repository `Omadzelevan/10x-shop-levanomadze` exists and the code is pushed.
 2. **Done:** deployed to Netlify at `https://10-x-shop.netlify.app/`.
-3. **Fix pushed:** `public/_redirects` adds the Netlify SPA fallback. **Redeploy** and then open
-   `/products/5` directly and refresh it on the live URL.
+3. **Done:** `public/_redirects` is deployed; `/products/5` opens and refreshes directly with
+   HTTP 200 on the live URL.
 4. **Done:** live URL is in `README.md`.
 5. **Done:** Lighthouse mobile baseline saved in `docs/lighthouse/` and scores recorded above.
 6. **Done:** `COMPATIBILITY.md` filled with real Chrome and Firefox desktop/mobile results.
 7. **Done:** Lighthouse, commit, issue and PR counts recorded; no `TODO(student)` markers remain.
 8. **Optional (FULL):** create real GitHub Issues/PRs if the course requires them.
 9. **Done:** repository renamed to `10x-shop-levanomadze`, matching the PRD naming rule.
-10. **Done:** validation text, `public/_redirects`, docs and screenshots committed and pushed.
+10. **Done:** validation text, `public/_redirects`, `public/robots.txt`, docs and screenshots
+    committed and pushed.
 11. Submit the repository link before **6 Nov 2026, 23:59 (Georgia time)**; confirm with the
     lecturer whether late changes are still accepted.
 
