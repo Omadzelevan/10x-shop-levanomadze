@@ -14,7 +14,7 @@ no real authentication, payment or `POST` request.
 | React | Function components, props, `children`, callback props, `useState`, `useEffect`, `map()` + stable `key`, controlled Login/Checkout, React Router, Context, immutable cart updates, Error Boundary | Custom hooks, reducer cart, lazy routes, reviews, related products |
 | TypeScript | Typed props/state/API data, `strict`, type guards, zero `any`, typecheck = 0 errors | Generics, `ApiClient`/`ApiError`, OOP classes |
 | Tailwind CSS | v4 via `@tailwindcss/vite`, `@import "tailwindcss";`, utilities, responsive grid, hover/focus/disabled variants | `@theme`, dark mode, custom utilities |
-| Optimization | Responsive at 375px, Error Boundary, real debugging log, compatibility matrix, Lighthouse placeholder | Lazy images/routes, memoization, Lighthouse before/after report |
+| Optimization | Responsive at 375px, Error Boundary, real debugging log, compatibility matrix, Lighthouse baseline | Lazy images/routes, memoization, Lighthouse before/after optimization report |
 | Practical | README, PLAN, REPORT, deploy config, meaningful Git history | Orders, Profile, promo code, theme |
 
 ## 3. Three-week plan
@@ -35,7 +35,7 @@ no real authentication, payment or `POST` request.
 | Cart | CartContext + persistence, Cart page, quantity/remove/totals | 7 h | Quantity, remove and clear update totals and the badge immediately; the cart survives refresh; malformed storage is ignored |
 | Checkout | Guard, controlled form + validation, order summary, confirmation | 6 h | Four exact fields validate; placing an order shows the confirmation without triggering the empty-cart redirect; the cart is cleared |
 | Quality | Tailwind responsive pass, a11y, Error Boundary, debugging, typecheck/lint/build | 8 h | 375px has no overflow and 44px tap targets; focus/hover/disabled states work; Error Boundary fallback is demonstrated; all commands pass |
-| Docs | PLAN, README, REPORT, DEBUG-LOG, COMPATIBILITY, deploy config | 5 h | Every document exists with real data; deploy config is present; `TODO(student)` marks everything the student must verify |
+| Docs | PLAN, README, REPORT, DEBUG-LOG, COMPATIBILITY, deploy config | 5 h | Every document exists with real data; deploy config is present; remaining external checks are listed in `REPORT.md` |
 
 ## 5. Risks and mitigations
 

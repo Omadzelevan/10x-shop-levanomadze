@@ -23,8 +23,8 @@
 | Tailwind | Responsive grid at 480px / 1024px | Done | `ProductGrid.tsx` |
 | Optimization | Responsive at 375px without horizontal scroll | Done | verified in headless Chromium, see section 3 |
 | Optimization | Error Boundary + DEBUG-LOG | Done | `ErrorBoundary.tsx`, `DEBUG-LOG.md` |
-| Optimization | Compatibility matrix + Lighthouse placeholder | Done | `COMPATIBILITY.md`, `docs/lighthouse/README.md` |
-| Practical | README, PLAN, REPORT, deploy config, Git history | Done | repository root, `vercel.json` |
+| Optimization | Compatibility matrix + Lighthouse baseline | Done | `COMPATIBILITY.md`, `docs/lighthouse/mobile-baseline.report.html` |
+| Practical | README, PLAN, REPORT, deploy config, Git history | Done | repository root, `vercel.json`, `public/_redirects` |
 
 ### Not done (on purpose)
 
@@ -32,23 +32,40 @@ FULL features are locked out of this scope: search, category filter, sorting, pa
 state, reviews, related products, promo codes, dark mode, Orders, Profile, Formik/Yup, lazy
 routes, `@theme`, generics, OOP models. CORE was completed first, as required.
 
+**Tooling deviation:** the PRD names ESLint with `typescript-eslint`, but `typescript-eslint`
+8.x declares `typescript >=4.8.4 <6.1.0` and this project is on **TypeScript 7.0.2**. The lint
+gate therefore uses **Oxlint** with the same important rules (`rules-of-hooks` error,
+`exhaustive-deps` warn, `no-explicit-any` error, `no-console` error). Forcing ESLint would mean
+downgrading the compiler, which would weaken the strict TypeScript setup the same PRD asks for.
+The `lint` script still exits 0 on the current source.
+
 ## 2. Metrics
 
 | Metric | Value |
 |---|---|
-| `npm run build` output JS | 290.83 kB (89.31 kB gzip) |
-| `npm run build` output CSS | 21.55 kB (5.07 kB gzip) |
+| `npm run build` output JS | 290.79 kB (89.31 kB gzip) |
+| `npm run build` output CSS | 24.40 kB (5.66 kB gzip) |
 | TypeScript / Oxlint errors | 0 / 0 |
-| Automated CORE browser checks | 33 / 33 passed (Chromium headless) |
-| Additional edge-case browser checks | 18 / 18 passed (Chromium headless) |
-| Targeted failure/responsive checks | 7 / 7 passed (Chromium headless) |
-| Requirement audit (header, grid, focus, hover, zero stock, totals) | 23 / 23 passed (Chromium headless) |
-| Lighthouse mobile score | TODO(student): capture on the deployed URL |
-| Commit count | TODO(student): `git rev-list --count HEAD` |
-| Issues / pull requests | TODO(student): create them in the GitHub repository |
+| Chrome functional checks (current build) | 25 / 25 passed |
+| Chrome responsive / screenshot checks | 15 / 15 passed |
+| Firefox functional checks (current build) | 23 / 23 passed |
+| Lighthouse mobile — Performance | 86 |
+| Lighthouse mobile — Accessibility | 100 |
+| Lighthouse mobile — Best Practices | 100 |
+| Lighthouse mobile — SEO | 100 |
+| Lighthouse mobile — CLS | 0.171 (FULL target < 0.1 not met) |
+| Live URL | root ✓; every direct route returns 404 until the SPA fix is redeployed |
+| Commit count | 24 (all dated 5 Nov 2026) |
+| Issues / pull requests | 0 / 0 in `Omadzelevan/10x-last` |
+| Repository name | `10x-last` (PRD asks for `10x-shop-{name}`) |
 
-The bundle numbers come from the local production build on the day this report was written.
-They will change slightly if the code changes.
+The bundle numbers come from `npm run build` on 12 Nov 2026. The Lighthouse baseline is in
+`docs/lighthouse/mobile-baseline.report.html` / `.report.json`: mobile preset, Chrome
+157.0.8103.39, live URL, captured 12 Nov 2026. DummyJSON latency affects repeat runs.
+
+**Git history limitation:** the 24 commits are real but all dated 5 Nov 2026 inside a ~1h19m
+window, so they do not demonstrate the planned three-week cadence. History cannot be backdated
+honestly; future work should use smaller, dated commits.
 
 ## 3. What was verified and what was not
 
@@ -57,23 +74,34 @@ They will change slightly if the code changes.
 - `npm install`, `npm run typecheck`, `npm run lint`, `npm run build` all exit successfully.
 - `npm run typecheck` really covers `src/`: a deliberately invalid file failed the check and
   passed the root `tsc --noEmit` (which checks nothing because of project references).
-- Automated browser flow in headless Chromium (`playwright-core` + system Chromium, kept outside
-  the repository): catalog → product → cart → guest checkout → login → checkout → confirmation,
+- Automated browser flow in headless Chrome (`puppeteer-core` + system Chrome, kept outside the
+  repository): catalog → product → cart → guest checkout → login → checkout → confirmation,
   badge updates, persistence, logout, malformed `localStorage`, invalid product ids, unknown
   routes, 375px overflow, mobile menu and stock limits.
+- The same flows in headless Firefox (`playwright-core` + Playwright Firefox): 23/23 checks
+  passed, including cart reload persistence and the in-memory login reset.
+- Responsive checks in Chrome: 375px, 768px and 1280px; 1-, 2- and 4-column grids, no horizontal
+  overflow, stacked checkout, 44px tap targets.
+- Lighthouse mobile run against `https://10-x-shop.netlify.app/`: 86 / 100 / 100 / 100.
 - Targeted failure checks: blocking `dummyjson.com` shows a readable error (not `Failed to
   fetch`), the discounted price matches the formula, and the checkout form has no horizontal
   overflow at 375px with 44px inputs.
 - Error Boundary fallback: a temporary `throw` in `CatalogPage` showed
   "Something went wrong." and the "Reload" button; the throw was removed afterwards.
 
-### Must be verified by the student
+### Remaining external actions
 
-- Firefox desktop and mobile emulation (the automated run used Chromium only).
-- Lighthouse before/after on the deployed URL, and the screenshots in `docs/lighthouse/`.
-- A real device check at 375px, including touch targets.
-- The deployed URL and direct refresh of `/products/5` on Vercel.
-- The browser tests listed in `COMPATIBILITY.md`.
+- **Redeploy Netlify.** The deployed build predates `public/_redirects`, so direct URLs still
+  return 404 and the old checkout email text is still live. The fix is present in the working
+  tree and appears in `dist/_redirects`; a new deploy is required.
+- **Rename the GitHub repository** from `10x-last` to `10x-shop-{name}` to match the PRD.
+- **Set the GitHub homepage** to `https://10-x-shop.netlify.app/` and add a short description;
+  the homepage field was empty when checked on 12 Nov 2026.
+- Create real Issues/PRs only if the FULL scope requires them.
+- A physical-device check (real phone, real touch) was not performed; mobile results are browser
+  viewport emulation.
+- Confirm the submission deadline with the lecturer: the PRD states **6 Nov 2026, 23:59 Georgia
+  time**; changes after that date are outside the graded window.
 
 ## 4. Three hardest problems
 
@@ -113,12 +141,17 @@ understand and defend every file.
 ## 7. Student TODO list (exact order)
 
 1. **Done:** public repository `Omadzelevan/10x-last` exists and the code is pushed.
-2. Deploy to Vercel (settings in `README.md`).
-3. Open `/products/5` directly on the live URL and refresh it; SPA rewrite must work.
-4. Put the live URL into `README.md` (replace the `TODO(student): URL` line).
-5. Capture Lighthouse mobile before/after on the live URL (`docs/lighthouse/README.md`).
-6. Fill `COMPATIBILITY.md` with real Chrome and Firefox results (desktop + mobile emulation).
-7. Replace the remaining `TODO(student)` markers: Lighthouse scores and commit/issues counts.
-8. Create a few real GitHub Issues/PRs if the course requires them.
-9. Submit the repository link before **6 Nov 2026, 23:59 (Georgia time)**.
+2. **Done:** deployed to Netlify at `https://10-x-shop.netlify.app/`.
+3. **Fix prepared:** `public/_redirects` adds the Netlify SPA fallback. **Redeploy** and then open
+   `/products/5` directly and refresh it on the live URL.
+4. **Done:** live URL is in `README.md`.
+5. **Done:** Lighthouse mobile baseline saved in `docs/lighthouse/` and scores recorded above.
+6. **Done:** `COMPATIBILITY.md` filled with real Chrome and Firefox desktop/mobile results.
+7. **Done:** Lighthouse, commit, issue and PR counts recorded; no `TODO(student)` markers remain.
+8. **Optional (FULL):** create real GitHub Issues/PRs if the course requires them.
+9. **Required by the PRD naming rule:** rename the repository to `10x-shop-{name}`.
+10. Commit and push the current changes (validation text, `public/_redirects`, docs, screenshots)
+    so the redeploy actually contains the SPA fallback.
+11. Submit the repository link before **6 Nov 2026, 23:59 (Georgia time)**; confirm with the
+    lecturer whether late changes are still accepted.
 

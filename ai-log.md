@@ -23,8 +23,8 @@ Honest, short notes about the main AI-assisted steps. No timestamps or scores we
 ## Verification
 
 - AI proposed and ran the typecheck probe that exposed a gate which checked no files.
-- AI wrote headless Chromium smoke tests (kept outside the repository) that found a real login
-  redirect race.
+- AI wrote headless Chrome and Firefox smoke tests (kept outside the repository) that found a
+  real login redirect race and the missing Netlify SPA fallback.
 - Rejected "disable the rule" fixes for lint warnings; the code was restructured instead.
 - Error Boundary was tested by temporarily throwing in a page and then reverting the change.
 
@@ -32,5 +32,5 @@ Honest, short notes about the main AI-assisted steps. No timestamps or scores we
 
 - README, PLAN, REPORT, DEBUG-LOG and COMPATIBILITY were drafted with AI assistance from the real
   work performed in this session.
-- Items that require the student (Lighthouse, Firefox checks, deployed URL, commit/issue counts,
-  actual study hours) were left as `TODO(student)` on purpose.
+- Lighthouse mobile baseline, Firefox checks, the deployed URL and the commit/issue/PR counts
+  were recorded from real runs on 12 Nov 2026. Only personal study hours remain unknown.

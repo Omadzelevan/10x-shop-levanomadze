@@ -4,7 +4,11 @@
 
 ## Live demo
 
-TODO(student): add the deployed URL (Vercel).
+- https://10-x-shop.netlify.app/ (Netlify)
+
+Direct links such as `/products/5` and `/cart` need the latest Netlify deploy with
+`public/_redirects` (SPA fallback). Redeploy after pulling this change; see
+[COMPATIBILITY.md](COMPATIBILITY.md) for the verified status.
 
 ## Features (CORE)
 
@@ -28,7 +32,7 @@ TODO(student): add the deployed URL (Vercel).
 | Styling | Tailwind CSS v4 via `@tailwindcss/vite` |
 | Data | [DummyJSON](https://dummyjson.com) `GET /products` and `GET /products/:id` |
 | Lint | Oxlint |
-| Deploy | Vercel (`vercel.json` SPA rewrites) |
+| Deploy | Netlify (`public/_redirects`) and Vercel (`vercel.json` SPA rewrites) |
 
 ## Architecture
 
@@ -86,14 +90,20 @@ accepted. The documented demo account is:
 The login state is intentionally **not** persisted: refreshing the page returns you to guest
 mode. The cart **is** persisted and survives refresh and logout.
 
-## Deploy to Vercel
+## Deploy to Netlify
 
 1. Push the repository to GitHub.
-2. In Vercel, choose **Add New → Project** and import the repository.
-3. Framework preset: **Vite**. Build command: `npm run build`. Output directory: `dist`.
-4. Deploy. `vercel.json` rewrites all routes to `index.html`, so opening or refreshing
-   `/products/5` directly works.
-5. Put the live URL in this README.
+2. In Netlify, choose **Add new site → Import an existing project** and import the repository.
+3. Build command: `npm run build`. Publish directory: `dist`.
+4. Deploy. `public/_redirects` contains `/* /index.html 200`, so opening or refreshing
+   `/products/5` directly works (SPA fallback).
+5. The live URL is listed in the **Live demo** section above.
+
+## Deploy to Vercel (alternative)
+
+1. In Vercel, choose **Add New → Project** and import the repository.
+2. Framework preset: **Vite**. Build command: `npm run build`. Output directory: `dist`.
+3. Deploy. `vercel.json` rewrites all routes to `index.html`.
 
 ## Project documents
 

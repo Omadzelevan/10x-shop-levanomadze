@@ -1,24 +1,40 @@
 # Lighthouse reports
 
-The Lighthouse reports are intentionally not fabricated. Capture them yourself on the deployed
-URL after the first successful deploy.
+The baseline report in this folder is real, not fabricated.
 
-## How to capture before/after
+| File | What it is |
+|---|---|
+| `mobile-baseline.report.html` | Lighthouse mobile report (open in a browser) |
+| `mobile-baseline.report.json` | Same run, machine-readable data |
 
-1. Open the live URL in Chrome **incognito** (no extensions, no warm profile).
-2. Open DevTools → **Lighthouse**.
-3. Select **Mobile** and the **Performance**, **Accessibility**, **Best Practices** and **SEO**
-   categories. Run the audit.
-4. Save the HTML report as `docs/lighthouse/mobile-before.html` (or a PDF/PNG screenshot).
-5. Make one measurable optimization (for example, lazy-load below-the-fold images or split a
-   route), deploy again, and repeat exactly the same steps on the same URL and device preset.
-6. Save the second report as `docs/lighthouse/mobile-after.html`.
-7. Copy the four category scores into `REPORT.md` (before and after).
+Captured on **12 Nov 2026** against `https://10-x-shop.netlify.app/` with Chrome
+157.0.8103.39, Lighthouse 12, default **mobile** preset:
+
+| Category | Score |
+|---|---|
+| Performance | 86 |
+| Accessibility | 100 |
+| Best Practices | 100 |
+| SEO | 100 |
+
+Lab metrics: FCP 1.4 s, LCP 3.0 s, TBT 70 ms, SI 2.9 s, **CLS 0.171**. The CORE target
+(Performance ≥ 85) is met. The FULL target CLS < 0.1 is not met; no optimization deploy was made,
+so there is no honest "after" report to compare.
+
+## How to reproduce
+
+```powershell
+npx -y lighthouse@12 "https://10-x-shop.netlify.app/" `
+  --chrome-path="C:\Program Files\Google\Chrome\Application\chrome.exe" `
+  --output=html --output=json --output-path="docs/lighthouse/mobile-after" `
+  --only-categories=performance,accessibility,best-practices,seo
+```
 
 ## Notes
 
+- Re-run after the Netlify redeploy so the report matches the final build.
 - Do not compare scores from different presets (desktop vs mobile) or different network
   conditions.
 - DummyJSON latency affects the score; repeat the audit once to check stability.
-- The CORE build is not required to ship a Lighthouse optimization. If you add one as a FULL
-  extra, document the before/after numbers honestly.
+- If you make a real optimization (for example lazy-load below-the-fold images), save the second
+  report as `mobile-after.report.html` and record both runs in `REPORT.md`.
