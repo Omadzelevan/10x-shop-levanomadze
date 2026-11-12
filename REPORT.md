@@ -55,17 +55,17 @@ The `lint` script still exits 0 on the current source.
 | Lighthouse mobile — SEO | 100 |
 | Lighthouse mobile — CLS | 0.171 (FULL target < 0.1 not met) |
 | Live URL | root ✓; every direct route returns 404 until the SPA fix is redeployed |
-| Commit count | 24 (all dated 5 Nov 2026) |
-| Issues / pull requests | 0 / 0 in `Omadzelevan/10x-last` |
-| Repository name | `10x-last` (PRD asks for `10x-shop-{name}`) |
+| Commit count | 29 (24 on 5 Nov 2026, 5 on 12 Nov 2026) |
+| Issues / pull requests | 0 / 0 in `Omadzelevan/10x-shop-levanomadze` |
+| Repository name | `10x-shop-levanomadze` (matches `10x-shop-{name}`) |
 
 The bundle numbers come from `npm run build` on 12 Nov 2026. The Lighthouse baseline is in
 `docs/lighthouse/mobile-baseline.report.html` / `.report.json`: mobile preset, Chrome
 157.0.8103.39, live URL, captured 12 Nov 2026. DummyJSON latency affects repeat runs.
 
-**Git history limitation:** the 24 commits are real but all dated 5 Nov 2026 inside a ~1h19m
-window, so they do not demonstrate the planned three-week cadence. History cannot be backdated
-honestly; future work should use smaller, dated commits.
+**Git history limitation:** of the 29 commits, 24 are dated 5 Nov 2026 inside a ~1h19m window
+and the remaining 5 are dated 12 Nov 2026. They do not demonstrate the planned three-week
+cadence. History cannot be backdated honestly; future work should use smaller, dated commits.
 
 ## 3. What was verified and what was not
 
@@ -94,9 +94,9 @@ honestly; future work should use smaller, dated commits.
 - **Redeploy Netlify.** The deployed build predates `public/_redirects`, so direct URLs still
   return 404 and the old checkout email text is still live. The fix is present in the working
   tree and appears in `dist/_redirects`; a new deploy is required.
-- **Rename the GitHub repository** from `10x-last` to `10x-shop-{name}` to match the PRD.
 - **Set the GitHub homepage** to `https://10-x-shop.netlify.app/` and add a short description;
-  the homepage field was empty when checked on 12 Nov 2026.
+  the homepage field was empty when checked on 12 Nov 2026. The repository is already renamed
+  to `10x-shop-levanomadze`.
 - Create real Issues/PRs only if the FULL scope requires them.
 - A physical-device check (real phone, real touch) was not performed; mobile results are browser
   viewport emulation.
@@ -140,18 +140,17 @@ understand and defend every file.
 
 ## 7. Student TODO list (exact order)
 
-1. **Done:** public repository `Omadzelevan/10x-last` exists and the code is pushed.
+1. **Done:** public repository `Omadzelevan/10x-shop-levanomadze` exists and the code is pushed.
 2. **Done:** deployed to Netlify at `https://10-x-shop.netlify.app/`.
-3. **Fix prepared:** `public/_redirects` adds the Netlify SPA fallback. **Redeploy** and then open
+3. **Fix pushed:** `public/_redirects` adds the Netlify SPA fallback. **Redeploy** and then open
    `/products/5` directly and refresh it on the live URL.
 4. **Done:** live URL is in `README.md`.
 5. **Done:** Lighthouse mobile baseline saved in `docs/lighthouse/` and scores recorded above.
 6. **Done:** `COMPATIBILITY.md` filled with real Chrome and Firefox desktop/mobile results.
 7. **Done:** Lighthouse, commit, issue and PR counts recorded; no `TODO(student)` markers remain.
 8. **Optional (FULL):** create real GitHub Issues/PRs if the course requires them.
-9. **Required by the PRD naming rule:** rename the repository to `10x-shop-{name}`.
-10. Commit and push the current changes (validation text, `public/_redirects`, docs, screenshots)
-    so the redeploy actually contains the SPA fallback.
+9. **Done:** repository renamed to `10x-shop-levanomadze`, matching the PRD naming rule.
+10. **Done:** validation text, `public/_redirects`, docs and screenshots committed and pushed.
 11. Submit the repository link before **6 Nov 2026, 23:59 (Georgia time)**; confirm with the
     lecturer whether late changes are still accepted.
 
