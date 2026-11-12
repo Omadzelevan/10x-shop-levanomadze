@@ -31,9 +31,7 @@ export function validateCheckout(values: ShippingInfo): CheckoutErrors {
 
   const email = values.email.trim()
 
-  if (email === '') {
-    errors.email = 'Email is required'
-  } else if (!emailPattern.test(email)) {
+  if (!emailPattern.test(email)) {
     errors.email = 'Please enter a valid email address'
   }
 
